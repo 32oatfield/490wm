@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+
+    
+ 
+      
+    <meta charset='utf-8' />
+    <title>University of Oregon Mapping</title>
+    <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+   
+<!--    Include the reference to the Mapbox JavaScript here in the <head> of the page    -->
+      
+      <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v2.2.0/mapbox-gl.js'>
+      </script>      
+      
+
+<!--    Include the reference to the Mapbox CSS here in the <head> of the page    -->
+      
+      <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v2.2.0/mapbox-gl.css' rel='stylesheet' />
+
+
+    <style>
+
+ /* Insert the CSS code here between the <style> tags */
+ 
+          /* java script block quote, or use [command + /] in blocks */
+        
+        body { margin:0; padding:0; }
+        #map { position:absolute; top:0; bottom:0; width:100%; }
+        
+        #title { z-index: 9999; 
+             background-color:white; 
+             opacity: 80%; 
+             text-align: center}   
+
+        h2 {font-family: cursive; color: blue}
+        
+
+
+    </style>
+  </head>
+
+  <body>
+    <!--  Insert the map div here in the <body> of the page  -->
+    <div id='map'></div>
+      
+      
+    <!--  Insert the tile div here (part V) -->
+    <div id = 'title'>
+        
+        <h1>My Map of Portland</h1>
+        <h2>By: Aidan Austin</h2>
+        <h3>GEOG 490: Web Mapping</h3>
+          
+      </div>
+      
+    
+      
+      
+
+    <script>
+            // Insert the JavaScript within the <script> tags, within the body   
+            // Start with the Mapbox access token here
+        mapboxgl.accessToken = 'pk.eyJ1IjoiYWF1c3RpbjMiLCJhIjoiY2x1bGhqNTN1MGZ1ZzJxbzFjZGt0dzZoaCJ9.773k7xv2KGU-A4eAPwZvcQ'; //  Put your access token between the single quotes.
+
+
+        // Then initialize the map here
+        
+//        var map = new mapboxgl.Map({
+//         container: 'map', // id of a div on your page, where the map will be inserted
+//         style: 'mapbox://styles/mapbox/navigation-night-v1', // stylesheet location
+//         center: [-122.6788, 45.5212], // starting position [lng, lat]  
+//         zoom: 14 // starting zoom 
+//            });      
+//        
+        
+        
+        var map = new mapboxgl.Map({container: 'map', // Choose from Mapbox's core styles, or make your own style with Mapbox Studio
+        style: 'mapbox://styles/mapbox/navigation-night-v1',
+        zoom: 8,
+        center: [-74.5447, 40.6892]
+})
+        
+        
+        
+        
+//     style: 'mapbox://styles/mapbox/streets-v11', // stylesheet location
+
+
+   
+
+        // Add popup markers here  (part IV)
+        
+         var popup = new mapboxgl.Popup({ offset: 25 })
+        .setHTML('Hello World. Welcome to Portland!');
+        
+        // Add any other variables such as markers here (part III)
+        
+         var marker = new mapboxgl.Marker({color:'tan'})
+        .setLngLat([-122.67940, 45.51887]) // starting position [lng, lat] 
+        .setPopup(popup) // //add the popup with the variable name 'popup' to the marker 
+        .addTo(map); // add the open market to the map
+        
+//         var marker2 = new mapboxgl.Marker({color:'green'})
+//        .setLngLat([-122.69, 45.55]) // starting position [lng, lat] 
+//        .addTo(map)
+//         
+        var marker3 = new mapboxgl.Marker({color:'green'})
+        .setLngLat([-122.67737, 45.52542]) // starting position [lng, lat] 
+        .setPopup(popup) // //add the popup with the variable name 'popup' to the marker 
+        .addTo(map); // add the open market to the map
+//        
+         var marker4 = new mapboxgl.Marker({color:'green'})
+         .setLngLat([-122.68424, 45.51184]) // starting position [lng, lat] 
+         .addTo(map)
+       
+    
+//         var popup_layer = new mapboxgl.Popup ({closeOnClick: true, anchor: 'top-right'})
+//         .setLngLat([-122.64,45.5]) // popup coordinates
+//         .setHTML('<h1>Hi Portland!</h1>') // popup text
+//        .addTo(map); // add this popup to the map!
+        
+        
+// var popuplayer_voodoo = new mapboxgl.Popup({closeOnClick: true, anhor: 'top-left'})
+ //        .setLngLat([-122.673308, 45.522675])
+   //      .setHTML ('<a href = "https://www.voodoodoughnut.com">voodoo doughnuts</a>')
+  //       .addTo(map); 
+    
+
+         var popuplayer_bowery1 = new mapboxgl.Popup({closeOnClick: true, anchor: 'top-right'})
+         .setLngLat([-122.68424, 45.51184])
+         .setHTML ('<a href = "https://www.bowerybagels.com/">Bowery Bagels (Aidans Favorite Bagel Shop in Portland) - location 1</a>')
+         .addTo(map);
+
+         var popuplayer_bowery2 = new mapboxgl.Popup({closeOnClick: true, anchor: 'left'})
+         .setLngLat([-122.67737, 45.52543])
+         .setHTML ('<a href = "https://www.bowerybagels.com/">Bowery Bagels (Aidans Favorite Bagel Shop in Portland) - location 2</a>')
+         .addTo(map);
+    
+    
+
+         
+         
+
+        // Add optional advanced "On load" function here
+        
+        
+        map.on('load', function () {
+		map.addSource('wms-test-source', {
+			'type': 'raster',
+			'tiles': [
+			'https://img.nj.gov/imagerywms/Natural2015?bbox={bbox-epsg-3857}&format=image/png&service=WMS&version=1.1.1&request=GetMap&srs=EPSG:3857&transparent=true&width=256&height=256&layers=Natural2015'
+			],
+			'tileSize': 256
+		});
+		map.addLayer(
+		{
+			'id': 'wms-test-layer',
+			'type': 'raster',
+			'source': 'wms-test-source',
+			'paint': {}
+			},
+			'aeroway-line'
+		);
+	});
+
+         
+        
+    </script>
+
+  </body>
+
+</html>
+
+
+<!--
+Answer the following questions:
+
+How do you open the web console on your favorite browser? Name the browser and the steps to open it?
+
+
+Note that using the Brackets editor, I'm supposed to also be able to click the lightning bolt option to be able to view a live version of my webpage, but for some reason that does not work on my Mac. It does work on the SSIL Windows Computers, however.
+
+In order to open the webpage on my Mac I first use the 'connect to a server' to connect to my R-Drive, then I use [Commmand + O] and find my file in the file explorer and click 'open.' This will load my webpage.
+
+
+
+Describe (in your own words) the relationship between HTML and CSS?
+
+
+HTML is the 'basic structure' of a website. HTML is modified by CSS in order to control general website layout, formatting, and presentation. For example, while one might code the (viewable) heading names in HTML, if one wants to specify how those headers look (beyond the default style) one would also need to use CSS to code how that heading would look.
+
+
+-->
