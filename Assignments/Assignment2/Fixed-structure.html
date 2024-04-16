@@ -54,9 +54,9 @@
 
             // 2.3 Add any other variables (such as popups and markers) to the first map
             var popup = new mapboxgl.Popup()
-                .setText('This is an example of the Mates and Bounds land surveying system. This was used for the first 13 colonies which later became the United States')
+                .setText('This is an example of the Mates and Bounds land surveying system. This was used for the first 13 colonies which later became part of the United States.')
             
-            var marker = new mapboxgl.Marker({color:'red'})
+            var marker = new mapboxgl.Marker({color:'gold'})
                 .setLngLat([-76.80346, 36.73831])
                 .setPopup(popup) // add the anmed "popup" to this marker
                 .addTo(map); // add it to the map with the ID "map"
@@ -91,7 +91,7 @@
             var popup2 = new mapboxgl.Popup()
                 .setText('This is an example of French Long Lot land surveying. Note that plots of land touch the river with a long tail outwards.');
             
-            var marker2 = new mapboxgl.Marker({color:'blue'})
+            var marker2 = new mapboxgl.Marker({color:'coral'})
                 .setLngLat([-90.85975, 30.05602])
                 .setPopup(popup2) // add the popup to the marker
                 .addTo(map2);
@@ -119,7 +119,7 @@
                 })
             
             var popup3 = new mapboxgl.Popup()
-                .setText('This is an example of the United Stated Public Land Survey (USPLS). This type of surveying method was used for most of the Central and Western parts of the U.S.');            
+                .setText('This is an example of the United Stated Public Land Survey (USPLS). This type of surveying method was used for most of the Central and Western parts of the United States.');            
             
            var marker3 = new mapboxgl.Marker({color:'red'})
                 .setLngLat([-104.45415, 48.88714])
