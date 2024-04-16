@@ -46,18 +46,18 @@
             // 2.2 Then initialize the first map
             var map = new mapboxgl.Map({
                 container: 'map1', // id of a div on your page, where the map will be inserted
-                style: 'mapbox://styles/mapbox/streets-v11',
-                center: [-122.6788, 45.5212], // starting positon [lng, lat] 
+                style: 'mapbox://styles/mapbox/satellite-v9',
+                center: [-76.80346, 36.74711], // starting positon [lng, lat] 
                 zoom: 11 // starting zoom
             })
 
 
             // 2.3 Add any other variables (such as popups and markers) to the first map
             var popup = new mapboxgl.Popup()
-                .setText('This is my first point.');
+                .setText('This is an example of the Mates and Bounds land surveying system. This was used for the first 13 colonies which later became the United States')
             
-            var market = new mapboxgl.Marker({color:'red'})
-                .setLngLat([-122.6788, 45.5212])
+            var marker = new mapboxgl.Marker({color:'red'})
+                .setLngLat([-76.80346, 36.73831])
                 .setPopup(popup) // add the anmed "popup" to this marker
                 .addTo(map); // add it to the map with the ID "map"
             
@@ -82,17 +82,17 @@
             // 2.5.3 Then initialize the 2nd map
             var map2 = new mapboxgl.Map({
                 container: 'map2', // id of a div on your page, where the map will be inserted
-                style: 'mapbox://styles/mapbox/streets-v11', // stylesheet location
-                center: [-122.6588, 45.1212], // starting location
-                zoom: 11 // starting zoom
+                style: 'mapbox://styles/mapbox/satellite-v9', // stylesheet location
+                center: [-90.85975, 30.06320], // starting location
+                zoom: 12 // starting zoom
             })
 
             // 2.5.4 Add any other variables (such as markers) to the second map
             var popup2 = new mapboxgl.Popup()
-                .setText('This is my second point.');
+                .setText('This is an example of French Long Lot land surveying. Note that plots of land touch the river with a long tail outwards.');
             
             var marker2 = new mapboxgl.Marker({color:'blue'})
-                .setLngLat([-122.6588, 45.1212])
+                .setLngLat([-90.85975, 30.05602])
                 .setPopup(popup2) // add the popup to the marker
                 .addTo(map2);
         
@@ -113,16 +113,16 @@
             
             var map3 = new mapboxgl.Map({
                 container: 'map3',
-                style: 'mapbox://styles/mapbox/streets-v11',
-                center: [-121.5453, 44.0920],
-                zoom: 11
+                style: 'mapbox://styles/mapbox/satellite-v9',
+                center: [-104.45415, 48.88714],
+                zoom: 10
                 })
             
             var popup3 = new mapboxgl.Popup()
-                .setText('This is my third point.');            
+                .setText('This is an example of the United Stated Public Land Survey (USPLS). This type of surveying method was used for most of the Central and Western parts of the U.S.');            
             
            var marker3 = new mapboxgl.Marker({color:'red'})
-                .setLngLat([-121.5453, 44.0920])
+                .setLngLat([-104.45415, 48.88714])
                 .setPopup(popup3) // add the popup to the marker
                 .addTo(map3);
         
