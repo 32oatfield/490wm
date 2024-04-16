@@ -42,7 +42,7 @@
         
         /* Variables for the marker and fly-to locations*/
         var clickCounter = 1; // keep track of the number of times the user has clicked
-        var flyLocations = [[151.21529669782535,-33.85660618894459],[2.2944,48.8589], [-97.70,30.30]]; // Where the map will fly to
+        var flyLocations = [[-123.08479,44.05268],[-122.67935,45.51891],[-123.88134,45.68919], [-123.26152,44.56397]]; // Where the map will fly to
         
         
         
@@ -51,15 +51,13 @@
             container: 'map',
             style: 'mapbox://styles/mapbox/streets-v11',
             center: flyLocations[0],
-            zoom: 17
+            zoom: 12
         });
         
-
-           
         
         // Add popups and markers to the map
         var popup = new mapboxgl.Popup()
-            .setText('This is my first point.');
+            .setText('This is the town where I go to school.');
 
         var marker = new mapboxgl.Marker({color:'DarkRed'})
             .setLngLat(flyLocations[0]) // put the marker at the first starting position in the flyLocations array [lng, lat]
@@ -67,7 +65,7 @@
             .addTo(map);
         
         var popup2 = new mapboxgl.Popup()
-            .setText('This is my second point.');
+            .setText('This is the town where my mom lives.');
 
         var marker2 = new mapboxgl.Marker({color:'DarkRed'})
             .setLngLat(flyLocations[1]) // put the marker at the second starting position in the flyLocations array [lng, lat]
@@ -75,12 +73,22 @@
             .addTo(map);
         
         var popup3 = new mapboxgl.Popup()
-            .setText('This is my third point.');
+            .setText('This is the town where my dad lives.');
 
         var marker3 = new mapboxgl.Marker({color:'DarkRed'})
             .setLngLat(flyLocations[2]) // put the marker at the third starting position in the flyLocations array [lng, lat]
             .setPopup(popup3) //add the popup to the marker 
             .addTo(map);
+        
+        var popup4 = new mapboxgl.Popup()
+            .setText('This is the town where my college best friend lives.');
+        
+        var marker4 = new mapboxgl.Marker({color:'DarkRed'})
+            .setLngLat(flyLocations[3]) // put the marker at the third starting position in the flyLocations array [lng, lat]
+            .setPopup(popup4) //add the popup to the marker 
+            .addTo(map);
+        
+
         
         
         // add a 'Listener' to the div with the ID 'fly', that's the button.
