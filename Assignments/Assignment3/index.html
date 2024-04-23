@@ -14,7 +14,7 @@
     <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v3.2.0/mapbox-gl.css' rel='stylesheet' />
     
     <style>
-               /*  stlye for paragraph tags */
+        /*  stlye for paragraph tags */
        p {
          color: white;
        }
@@ -74,7 +74,7 @@
          padding-left: 10px;
        }
 
-
+       /* set color for renters and owners */
        .renter {
              color:#d95f02;
        }
@@ -90,6 +90,7 @@
          color: white;
        }
         
+        /* set parameters for body and map /*
         body {margin:0; padding:0; }
         #map {position: absolute; top:0; bottom:0; width: 100%; }
          
@@ -106,6 +107,7 @@
          // Add zoom and rotation controls to the map.
             map.addControl(new mapboxgl.NavigationControl());
 
+        // Legend interaction (allowing the description panel to be collapsed).
           var state = { panelOpen: true };
 
           function panelSelect(e){
@@ -122,11 +124,8 @@
 
     </script>
     
-  
-    
 
-
-        <!-- The following div contains a description panel that  would be placed 10 px away from the bottom left hand corner of the map. -->
+        <!-- The following div contains a description panel that  would be placed 10 px away from the bottom left hand corner of the map. Its 250px tall. -->
     <div class="descriptionPanel" id="descriptionPanel" style="height: 250px;">
          <span onClick=panelSelect() id="glyph" class="chevron glyphicon glyphicon-chevron-down"></span>
          <hr/>
@@ -139,7 +138,7 @@
     
     
         <!--
-            This div essentially gives a 'key' or 'legend' to the map user. It shows that renters are represented with purple dots while owners are represented with blue dots. To code this in the div we definine a name and color for both legend items.
+            This div essentially gives a 'key' or 'legend' to the map user. It shows that renters are represented with purple dots while owners are represented with blue dots. To code this in the div we definine a name and the circle (which is the #11044) for both legend items. Note that the *colors* for the dots are defined above in the "style" section.
         -->
     <div class= "LegandContainer">
         <div class="legendItem">
