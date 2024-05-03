@@ -1,0 +1,181 @@
+ <!DOCTYPE html>
+ <html>
+ <head>
+     <meta charset='utf-8' />
+     <title>Swipe between maps</title>
+     <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+     <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v3.2.0/mapbox-gl.js'></script>
+     <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v3.2.0/mapbox-gl.css' rel='stylesheet' />
+		
+     <!-- JS and CSS for the swipe plugin -->
+     <script src='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-compare/v0.4.0/mapbox-gl-compare.js'></script>
+     
+     <link rel='stylesheet' href='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-compare/v0.4.0/mapbox-gl-compare.css' type='text/css' />
+      
+     
+     <style>
+          body { margin:0; padding:0;overflow: hidden;}
+          body * {
+             -webkit-touch-callout: none;
+               -webkit-user-select: none;
+              -moz-user-select: none;
+               -ms-user-select: none;
+                   user-select: none;
+              }
+
+          .map {
+              position: absolute;
+              top: 0;
+              bottom: 0;
+              width: 100%;
+              }
+      </style>
+ </head>
+ <body>
+     <div id="comparison-container">
+      		<div id='owners' class='map'></div>  <!-- div for owners map div -->
+      		<div id='renters' class='map'></div> <!--  div for renters map div -->
+     </div>
+
+     <script>
+           //add your Mapbox access token and map variable here!
+         mapboxgl.accessToken = 'pk.eyJ1Ijoiam9tZXJzb24iLCJhIjoiY2o1bXE2bHlyMnJhZDMzbnpyMnhlODdpcSJ9.QJMJ_cTFCY050aZfSn1umQ';
+         
+         // intialize owner map, with dark background, centerd on portland with zoom level 10
+         var ownerMap = new mapboxgl.Map({
+             container: 'owners', // owners map div 
+             style: 'mapbox://styles/mapbox/dark-v10', // Mapbox dark style 
+             center: [-122.67925632381818, 45.518900784843254], 
+             zoom: 10 
+          });
+         
+         // initialize renter map, with dark background, centerd on portland with zoom level 10
+         var renterMap = new mapboxgl.Map({
+             container: 'renters', // owners map div
+             style: 'mapbox://styles/mapbox/dark-v10', // mapbox light style so we can observe the swipe
+             center: [-122.67925632381818, 45.518900784843254], // ** USE SAME CENTER AS OTHER MAP SO THEY ARE PERFECTLY ALLIGNED ** 
+             zoom: 10
+         })
+          
+         // initialize popup 1
+         var popup = new mapboxgl.Popup({
+              closeButton: false,
+              closeOnClick: false
+          });
+         
+         // callback function
+         ownerMap.on('load',function() {
+             // Loads the colored shapes, denoting the owner percentages. This is pulled from the tilset, which is the link in the 'url' section.
+             // The 'paint' section filters the different shades of color depending on the percentage of ownership. The lighter colors indicate less onwership, while the darker colors represent more.
+                ownerMap.addLayer({
+                id: 'Owner Data',
+                type: "fill",
+                  source: {
+                    type: 'vector',
+                    url: 'mapbox://aaustin3.da9tf1gz' 
+                  },
+                    'source-layer': 'Owner-Renter-Pop-bs2jam', //input your source layer name e.g. 'Owner-Renter-Pop-ca08iw'
+                  paint: {
+                     'fill-color':
+                       ["step",
+                        ["get", "Own"],
+                        "hsl(225, 100%, 97%)",
+                        17.0,
+                        "hsl(203, 47%, 82%)",
+                        22.0,
+                        "hsl(202, 57%, 63%)",
+                        27.0,
+                        "#3182bd",
+                        32.0,
+                         "hsl(210, 90%, 32%)"
+                       ],
+                       "fill-opacity": 0.7 
+                   }
+                });
+         })
+         
+         // Callback function (in this case, on mousemove)
+         ownerMap.on('mousemove', 'Owner Data', function (e) {
+        
+             // Change the cursor style as a UI indicator.
+             ownerMap.getCanvas().style.cursor = 'pointer';
+
+             var coordinates = e.lngLat;
+             var description = e.features[0].properties.Own;
+
+             // Populate the popup and set its coordinates
+             // based on the feature found.
+             popup.setLngLat(coordinates)
+                .setHTML("Owners: " + description + "%") 
+                .addTo(ownerMap);
+             });
+            
+             // Removes popup from the map if the cursor leaves the page.
+             ownerMap.on('mouseleave', 'Owner Data', function () {
+                 ownerMap.getCanvas().style.cursor = '';
+                 popup.remove();
+             });
+         
+         // Callback function (on load)
+         renterMap.on('load', function(){
+             
+             // Loads the colored shapes, denoting the owner percentages. This is pulled from the tilset,which is the link in the 'url' section.
+             // The 'paint' section filters the different shades of color depending on the percentage of rentership. The lighter colors indicate less rentership, while the darker colors represent more.
+              renterMap.addLayer({
+                  id: 'Renter Data',
+                  type: "fill",
+                  source: {
+                    type: 'vector',
+                    url: 'mapbox://aaustin3.da9tf1gz' //input your tileset ID URL
+                  },
+                    'source-layer': 'Owner-Renter-Pop-bs2jam', //input your source layer name e.g. Owner-Renter-Pop-dr7310
+                  paint: {
+                    'fill-color':    ["step",
+                       ["get", "Rent"],
+                       "hsl(225, 100%, 97%)",
+                       17.0,
+                       "hsl(203, 47%, 82%)",
+                       22.0,
+                       "hsl(202, 57%, 63%)",
+                       27.0,
+                       "#3182bd",
+                       32.0,
+                        "hsl(210, 90%, 32%)"],
+                       "fill-opacity": 0.7 ,
+                  }
+                });
+            });
+         
+         renterMap.on('mousemove', 'Renter Data', function (e) {
+        
+         // Change the cursor style as a UI indicator.
+         renterMap.getCanvas().style.cursor = 'pointer';
+    
+             var coordinates = e.lngLat;
+             var description = e.features[0].properties.Rent;
+
+             // Populate the popup and set its coordinates
+             // based on the feature found.
+             popup.setLngLat(coordinates)
+                 .setHTML("Renters: " + description + "%")
+                 .addTo(renterMap);
+             });
+                
+             // Removes popup from the map if the cursor leaves the page.
+             renterMap.on('mouseleave', 'Renter Data', function () {
+                renterMap.getCanvas().style.cursor = '';
+                popup.remove();
+             });
+
+ 
+         // A selector or reference to HTML element
+         var container = '#comparison-container';
+         
+         // Allows the Owner and Renter maps to be compared side by side
+         var map = new mapboxgl.Compare(ownerMap, renterMap, container, {})
+         
+        
+     </script>
+
+</body>
+</html>
