@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html>
+
+  <head>      
+    <meta charset='utf-8' />
+    <title>SCYP Projects Map</title>
+   
+    <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+    <!--    The Mapbox JavaScript here in the <head> of the page    -->
+      <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v3.3.0/mapbox-gl.js'></script>
+    <!--    The Mapbox CSS here in the <head> of the page    -->
+      <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v3.3.0/mapbox-gl.css' rel='stylesheet' />
+      
+      
+            <!--   Head materials for Zoom buttons-->
+      <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no">
+      <link href="https://api.mapbox.com/mapbox-gl-js/v3.3.0/mapbox-gl.css" rel="stylesheet">
+      <script src="https://api.mapbox.com/mapbox-gl-js/v3.3.0/mapbox-gl.js"></script>
+
+
+    <style>
+ 
+          /* java script block quote, or use [command + /] in blocks */
+        
+        body { margin:0; padding:0; }
+        #map { position:absolute; top:0; bottom:0; width:100%; }
+        
+        #title { z-index: 9999; 
+             background-color:white; 
+             opacity: 80%; 
+             text-align: center}   
+
+        h2 {font-family: cursive; color: blue}
+        
+                /* Insert the CSS for the image here */
+        .popupImage{
+            width: 100%
+        }
+        
+        
+
+
+    </style>
+  </head>
+
+  <body>
+    <!--  Insert the map div here in the <body> of the page  -->
+    <div id='map'></div>
+      
+      
+    <!--  Insert the tile div here -->
+
+    
+      
+      
+
+    <script>
+            // Insert the JavaScript within the <script> tags, within the body   
+            // Start with the Mapbox access token here
+        mapboxgl.accessToken = 'pk.eyJ1IjoiYWF1c3RpbjMiLCJhIjoiY2x1bGhqNTN1MGZ1ZzJxbzFjZGt0dzZoaCJ9.773k7xv2KGU-A4eAPwZvcQ'; //  Put your access token between the single quotes.
+        
+        
+                var places = {
+          "type": "FeatureCollection",
+          "features": [
+            {
+              "type": "Feature",
+              "properties": {
+                "Year": 2022,
+                "marker-color": "#000000",
+                "Municipality": "City of Tigard",
+                "Special": "y"
+              },
+              "geometry": {
+                "coordinates": [
+                  -122.77174194312182,
+                  45.430877067004104
+                ],
+                "type": "Point"
+              },
+              "id": 0
+            },
+            {
+              "type": "Feature",
+              "properties": {
+                "Year": "2009-2010",
+                "marker-color": "#000000",
+                "Municipality": "City of Gresham",
+                "Special": "y"
+              },
+              "geometry": {
+                "coordinates": [
+                  -122.43303233518739,
+                  45.49787860668533
+                ],
+                "type": "Point"
+              },
+              "id": 1
+            },
+            {
+              "type": "Feature",
+              "properties": {
+                "Year": "2010-2011",
+                "marker-color": "#000000",
+                "Municipality": "City of Salem",
+                "Special": "n"
+              },
+              "geometry": {
+                "coordinates": [
+                  -123.0330943742238,
+                  44.939033107414275
+                ],
+                "type": "Point"
+              }
+            },
+            {
+              "type": "Feature",
+              "properties": {
+                "Year": "2011-2012",
+                "marker-color": "#000000",
+                "Municipality": "City of Springfield",
+                "Special": "n"
+              },
+              "geometry": {
+                "coordinates": [
+                  -123.02210960745988,
+                  44.04609726968138
+                ],
+                "type": "Point"
+              },
+              "id": 3
+            },
+            {
+              "type": "Feature",
+              "properties": {
+                "Year": "2013-2014",
+                "marker-color": "#000000",
+                "Municipality": "City of Medford"
+              },
+              "geometry": {
+                "coordinates": [
+                  -122.87113037851068,
+                  42.32649458096134
+                ],
+                "type": "Point"
+              },
+              "id": 4
+            },
+            {
+              "type": "Feature",
+              "properties": {
+                "Year": "2015-2016",
+                "marker-color": "#000000",
+                "Municipality": "City of Redmond"
+              },
+              "geometry": {
+                "coordinates": [
+                  -121.17338174512942,
+                  44.27257865841736
+                ],
+                "type": "Point"
+              }
+            },
+            {
+              "type": "Feature",
+              "properties": {
+                "Year": "2016-2017",
+                "marker-color": "#000000",
+                "Municipality": "City of Albany"
+              },
+              "geometry": {
+                "coordinates": [
+                  -123.10531904262845,
+                  44.63607466537965
+                ],
+                "type": "Point"
+              }
+            },
+            {
+              "type": "Feature",
+              "properties": {
+                "Year": "2017-2018",
+                "marker-color": "#000000",
+                "Municipality": "City of LaPine"
+              },
+              "geometry": {
+                "coordinates": [
+                  -121.50427203261302,
+                  43.670267757043035
+                ],
+                "type": "Point"
+              }
+            },
+            {
+              "type": "Feature",
+              "properties": {
+                "Year": "2018-2019",
+                "marker-color": "#000000",
+                "Municipality": "Dunes City"
+              },
+              "geometry": {
+                "coordinates": [
+                  -124.11642500963316,
+                  43.88309286066601
+                ],
+                "type": "Point"
+              },
+              "id": 8
+            },
+            {
+              "type": "Feature",
+              "properties": {
+                "Year": "2019-2020",
+                "marker-color": "#000000",
+                "Municipality": "City of Silverton"
+              },
+              "geometry": {
+                "coordinates": [
+                  -122.78322097536952,
+                  45.00498492830718
+                ],
+                "type": "Point"
+              }
+            },
+            {
+              "type": "Feature",
+              "properties": {
+                "Year": "2020-2021",
+                "marker-color": "#000000",
+                "Municipality": "City of Troutdale"
+              },
+              "geometry": {
+                "coordinates": [
+                  -122.38813416890818,
+                  45.54130327782761
+                ],
+                "type": "Point"
+              },
+              "id": 10
+            },
+            {
+              "type": "Feature",
+              "properties": {
+                "Year": "2021-2022",
+                "marker-color": "#000000",
+                "Municipality": "City of Hermiston"
+              },
+              "geometry": {
+                "coordinates": [
+                  -119.28895960765314,
+                  45.839797295254755
+                ],
+                "type": "Point"
+              },
+              "id": 11
+            },
+            {
+              "type": "Feature",
+              "properties": {
+                "Year": "2022-2023",
+                "marker-color": "#000000",
+                "Municipality": "City of Sisters"
+              },
+              "geometry": {
+                "coordinates": [
+                  -121.54926758613396,
+                  44.291227950624574
+                ],
+                "type": "Point"
+              },
+              "id": 12
+            },
+            {
+              "type": "Feature",
+              "properties": {
+                "Year": 2023,
+                "marker-color": "#000000",
+                "Municipality": "City of Corvallis"
+              },
+              "geometry": {
+                "coordinates": [
+                  -123.26199092850216,
+                  44.56388587676517
+                ],
+                "type": "Point"
+              }
+            },
+            {
+              "type": "Feature",
+              "properties": {
+                "Year": 2020,
+                "marker-color": "#000000",
+                "Municipality": "City of Hood River"
+              },
+              "geometry": {
+                "coordinates": [
+                  -121.52043225467611,
+                  45.70582423442468
+                ],
+                "type": "Point"
+              },
+              "id": 14
+            },
+            {
+              "type": "Feature",
+              "properties": {
+                "marker-color": "#0400ff",
+                "Year": "2017-2018",
+                "Municipality": "TriMet"
+              },
+              "geometry": {
+                "coordinates": [
+                  -122.67406434229036,
+                  45.519447448109474
+                ],
+                "type": "Point"
+              },
+              "id": 15
+            },
+            {
+              "type": "Feature",
+              "properties": {
+                "Year": "2019-2020",
+                "marker-color": "#0400ff",
+                "Municipality": "Lane Transit District"
+              },
+              "geometry": {
+                "coordinates": [
+                  -123.09937899405375,
+                  44.04873657055694
+                ],
+                "type": "Point"
+              },
+              "id": 16
+            }
+          ]
+        }
+     
+//                
+//              BASIC STRUCTIRE *********************************  
+//                
+//                                {
+//                  "type": "Feature",
+//                  "properties": {
+//                    "marker-color": "#0400ff",
+//                    "Year": "year-year",
+//                    "Municipality": "nameOfMunicipality"
+//                  },
+//                  "geometry": {
+//                    "coordinates": [
+//                      lng,
+//                      lat
+//                    ],
+//                    "type": "Point"
+//                  },
+//                  "id": use highest number
+//                },
+//                
+//                
+        
+
+		var bounds = [
+		    [-125.8996, 40.725096], // Southwest coordinates
+		    [-114.54596, 46.70853] // Northeast coordinates 
+		];
+        
+        
+        var map = new mapboxgl.Map({container: 'map', // Choose from Mapbox's core styles, or make your own style with Mapbox Studio
+  //    style: 'mapbox://styles/mapbox/light-v10',
+        style: 'mapbox://styles/mapbox/streets-v12',
+        zoom: 5,
+        maxBounds: bounds,
+        maxZoom: 11,                            
+        center: [-120.8580352, 43.9749298]
+                                    })        
+        
+        // Map's On 'load' function.
+        map.on('load', function () {
+             // insert code in the function here  (II.3)
+            map.addSource('places', {
+                'type': 'geojson',
+                'data': places
+            });
+
+            var layerID = 'places';
+            map.addLayer({
+                'id': layerID,
+                'type': 'circle',
+                'source': 'places',
+                'layout': {
+                    'icon-image': 'marker-15',
+                    'icon-allow-overlap': true
+                },
+            });
+        });
+        
+           // When a click event occurs on a feature in the places layer, 
+          // open a popup at the location of the feature, with description HTML from its properties.
+        map.on('click', 'places', function (e) {
+            var coordinates = e.features[0].geometry.coordinates.slice();
+            var description = "This is a map point <br> Type: " + e.features[0].properties.Year;
+
+            new mapboxgl.Popup()
+                .setLngLat(coordinates)
+                .setHTML(description) // the string in the description var is added to the popup here
+                .addTo(map);
+          });
+        
+        //     style: 'mapbox://styles/mapbox/streets-v11', // stylesheet location
+        /*
+        
+        var bound1 = new mapboxgl.Marker({color:'tan'})
+        .setLngLat([-125.8996, 40.725096]) // starting position [lng, lat] 
+        .addTo(map); // add the open market to the map
+        
+        var bound2 = new mapboxgl.Marker({color:'tan'})
+        .setLngLat([-114.74596, 46.70853]) // starting position [lng, lat] 
+        .addTo(map); // add the open market to the map
+        
+   
+
+        // Add popup markers here  (part IV)
+        
+        var salempopup_content = '<h2>Play the video to listen to Portland</h2><br>';
+
+        
+        
+         var salempopup = new mapboxgl.Popup({ offset: 25 })
+        .setHTML(salempopup_content);
+        
+        // Add any other variables such as markers here (part III)
+        
+         var marker = new mapboxgl.Marker({color:'tan'})
+        .setLngLat([-123.04175, 44.93616]) // starting position [lng, lat] 
+        .setPopup(salempopup) // //add the popup with the variable name 'popup' to the marker 
+        .addTo(map); // add the open market to the map
+        
+       
+         var tigardmarker = new mapboxgl.Marker({color:'green'})
+         .setLngLat([-122.76727, 45.42503]) // starting position [lng, lat] 
+         .addTo(map)
+
+         var tigard = new mapboxgl.Popup({closeOnClick: false, anchor: 'top-right'})
+         .setLngLat([-122.76727, 45.42503])
+         .setHTML ('Tigard')
+         .addTo(map);
+
+        
+        */
+        
+         map.getCanvas().style.cursor = 'auto';
+         
+        
+    </script>
+
+  </body>
+
+</html>
