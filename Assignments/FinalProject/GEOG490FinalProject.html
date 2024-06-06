@@ -2,27 +2,34 @@
 <html>
 
   <head>      
-    <meta charset='utf-8' />
-    <title>SCYP Projects Map</title>
+      <meta charset='utf-8' />
+      <title>SCYP Projects Map</title>
    
-    <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
-    <!--    The Mapbox JavaScript here in the <head> of the page    -->
+      <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+   
+      <!--    The Mapbox JavaScript here in the <head> of the page    -->
       <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v3.3.0/mapbox-gl.js'></script>
-    <!--    The Mapbox CSS here in the <head> of the page    -->
+     
+      <!--    The Mapbox CSS here in the <head> of the page    -->
       <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v3.3.0/mapbox-gl.css' rel='stylesheet' />
       
       
-            <!--   Head materials for Zoom buttons-->
+      <!--   Head materials for Zoom buttons-->
       <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no">
       <link href="https://api.mapbox.com/mapbox-gl-js/v3.3.0/mapbox-gl.css" rel="stylesheet">
       <script src="https://api.mapbox.com/mapbox-gl-js/v3.3.0/mapbox-gl.js"></script>
       
       <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-
+      
+      <!--      Website's "favicon"-->
+      <link rel="icon" type="image/x-icon" href="https://sci.uoregon.edu/sites/default/files/scyp_sqr_green.jpg">
+      
+      <link rel="preconnect" href="https://fonts.googleapis.com">
+      <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+      <link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:ital,wght@0,200..900;1,200..900&display=swap" rel="stylesheet">
 
     <style>
- 
-          /* java script block quote, or use [command + /] in blocks */
+
         
         body { margin:0; padding:0; }
         #map { position:absolute; top:0; bottom:0; width:100%; }
@@ -89,12 +96,23 @@
          margin-left: 10px;
        }
         
-                   /* style for heading level 4 tags */
+        /* style for p tags */
        p {
          color: white;
          margin-left: 10px;
+         font-family: "Source Sans 3"
        }
-
+        
+       .source-sans-3-<uniquifier> {
+           font-family: "Source Sans 3", sans-serif;
+           font-optical-sizing: auto;
+           font-weight: 300;
+           font-style: normal;
+        }
+        
+        .mapboxgl-popup-content{
+         font-family: "Source Sans 3", Arial, Helvetica, Verdana, sans-serif; sans-serif;
+        }
 
     </style>
   </head>
@@ -103,6 +121,8 @@
     <!--  Insert the map div here in the <body> of the page  -->
     <div id='map'></div>
       
+      
+    <!--      initialize description panel-->
     <div class="descriptionPanel" id="descriptionPanel" style="height: 250px;">
     <span onClick=panelSelect() id="glyph" class="chevron glyphicon glyphicon-chevron-down"></span>
          <hr/>
@@ -121,11 +141,10 @@
       
 
     <script>
-            // Insert the JavaScript within the <script> tags, within the body   
-            // Start with the Mapbox access token here
+        // access token
         mapboxgl.accessToken = 'pk.eyJ1IjoiYWF1c3RpbjMiLCJhIjoiY2x1bGhqNTN1MGZ1ZzJxbzFjZGt0dzZoaCJ9.773k7xv2KGU-A4eAPwZvcQ'; //  Put your access token between the single quotes.
         
-        
+                // GeoJSON list containing attributes to every point
                 var places = {
                   "type": "FeatureCollection",
                   "features": [
@@ -158,7 +177,13 @@
                         "ClassesAmount": 12,
                         "ProjectsAmount": "<a href=\"https://sci.uoregon.edu/sites/default/files/1_pager_gresham.pdf\">12",
                         "Logo": '<img class="popupImage" alt=“City of Gresham Logo" src="partner_logos/PP_gresham.jpg?maxwidth=1300&maxheight=1300&autorotate=fale">',
-                        "ReportsLink": "<a href=\"https://scholarsbank.uoregon.edu/xmlui/handle/1794/10382\">Explore the student reports"
+                        "ReportsLink": "<a href=\"https://scholarsbank.uoregon.edu/xmlui/handle/1794/10382\">Explore the 2009-2010 student reports",
+                        "Year2": "2018-2019",
+                        "ClassesAmount2": "0",
+                        "ProjectsAmount2": "<a href=\"https://sci.uoregon.edu/sites/default/files/eugenegresham_18-19_0.pdf\">Explore student projects summary",
+                        "ReportsLink2": "<a href=\"https://scholarsbank.uoregon.edu/xmlui/handle/1794/24506\">Explore the 2018-19 student reports",
+                        "Logo2": '<img class="popupImage" alt=“City of Gresham Logo" src="partner_logos/PP_EugeneGresham.jpg?maxwidth=1300&maxheight=1300&autorotate=fale">'
+
                       },
                       "geometry": {
                         "coordinates": [
@@ -470,56 +495,85 @@
                         "type": "Point"
                       },
                       "id": 16
+                    },
+                                          {
+                      "type": "Feature",
+                      "properties": {
+                        "Year": "2018-2019",
+                        "marker-color": "#00000",
+                        "Municipality": "City of Eugene and Gresham",
+                        "ClassesAmount": 0,
+                        "ProjectsAmount": "<a href=\"https://sci.uoregon.edu/sites/default/files/eugenegresham_18-19_0.pdf\">Explore one pager of student projects",
+                        "ReportsLink":"<a href=\"https://sci.uoregon.edu/sites/default/files/eugenegresham_18-19_0.pdf\">Explore student projects summary" + "<br>"+ "<a href=\"https://scholarsbank.uoregon.edu/xmlui/handle/1794/24506\">Explore the student reports",
+                        "Logo": '<img class="popupImage" alt=“Lane Transit District (LTD) Logo" src="partner_logos/PP_EugeneGresham.jpg?maxwidth=1300&maxheight=1300&autorotate=fale">'
+                      },
+                      "geometry": {
+                        "coordinates": [
+                          -123.09037899405375,
+                          44.04873657055694
+                        ],
+                        "type": "Point"
+                      },
+                      "id": 17
                     }
                   ]
                 }
-     
+     /*
 //                
-//              BASIC STRUCTIRE *********************************  
-//                
-//                                {
-//                  "type": "Feature",
-//                  "properties": {
-//                    "marker-color": "#0400ff",
-//                    "Year": "year-year",
-//                    "Municipality": "nameOfMunicipality"
-//                  },
-//                  "geometry": {
-//                    "coordinates": [
-//                      lng,
-//                      lat
-//                    ],
-//                    "type": "Point"
-//                  },
-//                  "id": use highest number
-//                },
-//                
-//                
-        
+              BASIC STRUCTIRE of each Geo JSON point *********************************  
+                
+                                {
+                  "type": "Feature",
+                  "properties": {
+                    "marker-color": "#0400ff",
+                    "Year": "year-year",
+                    "Municipality": "nameOfMunicipality"
+                   
+                "ClassesAmount": (ENTER # OF CLASSES),
+                "ProjectsAmount": "<a href=\"[INCLUDE LINK TO ONE PAGER]\">[# of projects]",
+                "ReportsLink": "<a href=\"https://scholarsbank.uoregon.edu/xmlui/handle/1794/24506\">Explore the student reports",
+                "Logo": '<img class="popupImage" alt=“[ALT tag for image goes HERE]" src="partner_logos/[NAME OF PARTNER LOGO].jpg?maxwidth=1300&maxheight=1300&autorotate=fale">'
+                  },
+                  "geometry": {
+                    "coordinates": [
+                      lng,
+                      lat
+                    ],
+                    "type": "Point"
+                  },
+                  "id": use highest number
+                },
+                
+                
+        */ 
 
+//        bounds to prevent people from scrolling to the abyss         
 		var bounds = [
 		    [-125.8996, 40.725096], // Southwest coordinates
 		    [-114.54596, 46.70853] // Northeast coordinates 
 		];
         
         
+//        initialize map 
         var map = new mapboxgl.Map({container: 'map', // Choose from Mapbox's core styles, or make your own style with Mapbox Studio
   //    style: 'mapbox://styles/mapbox/light-v10',
-        style: 'mapbox://styles/mapbox/streets-v12',
-        zoom: 5,
-        maxBounds: bounds,
-        maxZoom: 11,                            
-        center: [-120.8580352, 43.9749298]
+ //       style: 'mapbox://styles/mapbox/streets-v12',
+        style: 'mapbox://styles/aaustin3/clx2abiob01pl01rd6xjnh2ea',
+        zoom: 5, // set initial zoom
+        maxBounds: bounds, // set bounds
+        maxZoom: 11,    // set max zoom point                        
+        center: [-120.8580352, 43.9749298] // set center
                                     })        
         
         // Map's On 'load' function.
         map.on('load', function () {
-             // insert code in the function here  (II.3)
+             // loads in the places from GeoJSON
             map.addSource('places', {
                 'type': 'geojson',
                 'data': places
             });
 
+            // initialize the variable layerID
             var layerID = 'places';
             map.addLayer({
                 'id': layerID,
@@ -530,28 +584,44 @@
                     'icon-allow-overlap': true
                 },
             });
+            
+                // Change the cursor to a pointer when the mouse is over the places layer.
+                  map.on('mouseenter', layerID, function () {
+                       map.getCanvas().style.cursor = 'pointer';
+                  });
+
+                  // Change it back to a pointer when it leaves.
+                  map.on('mouseleave', layerID, function () {
+                         map.getCanvas().style.cursor = '';
+                  });
         });
         
            // When a click event occurs on a feature in the places layer, 
           // open a popup at the location of the feature, with description HTML from its properties.
         map.on('click', 'places', function (e) {
             var coordinates = e.features[0].geometry.coordinates.slice();
+            
+            // build out the description of the popup
             var description = e.features[0].properties.Logo
             description += "<br> Partner: " + e.features[0].properties.Municipality;
             description += "<br> Year: " + e.features[0].properties.Year;
             if (e.features[0].properties.ClassesAmount != '0'){
                 description += "<br> Number of Classes: " + e.features[0].properties.ClassesAmount;
             }
+            
+            // include the number of classes as long as the number of classes isn't zero
             if (e.features[0].properties.ClassesAmount != '0'){
                 description += "<br> Number of Projects: " + e.features[0].properties.ProjectsAmount;
                 }
             
+            // if the number of clases is zero, list the partnership as a SPECIAL PROJECT
             if (e.features[0].properties.ClassesAmount == '0'){
                 description += "<br><br>SPECIAL PROJECT";
                 }
-            
+
             description += "<br>"+ e.features[0].properties.ReportsLink;
             
+            // specicial popup for the City of Salem, which can't be built using the traditional popup structure.
             if (e.features[0].properties.Municipality == 'City of Salem'){
                 description = ''
                 description += e.features[0].properties.Logo
@@ -569,6 +639,8 @@
                 
             }
             
+            
+            // specicial popup for the City of Springfield, which can't be built using the traditional popup structure.    
             if (e.features[0].properties.Municipality == 'City of Springfield'){
                 description = ''
                 description += e.features[0].properties.Logo
@@ -584,10 +656,36 @@
                 description += "<br>" + e.features[0].properties.ReportsLink2;
                 
             }
+            
+             // specicial popup for the City of Gresham, which can't be built using the traditional popup structure.
+            if (e.features[0].properties.Municipality == 'City of Gresham'){
+                description = ''
+                description += e.features[0].properties.Logo
+                description += "<br> Partner: " + e.features[0].properties.Municipality;
+                description += "<br><br> First Partnership Year: " + e.features[0].properties.Year;
+                description += "<br> Number of Classes: " + e.features[0].properties.ClassesAmount;
+                description += "<br> Number of Projects: " + e.features[0].properties.ProjectsAmount;
+                description += "<br>"+ e.features[0].properties.ReportsLink;
+                
+                description += "</a><br><br> Second Partnership Year: " + e.features[0].properties.Year2;
+                description += "<br>Dual partnership with City of Eugene";
+                description += "<br>" + e.features[0].properties.ProjectsAmount2;
+                description += "<br>" + e.features[0].properties.ReportsLink2;
+                
+            }
+            
+            // specicial popup for the City of Eugene/Gresham partnership, which can't be built using the traditional popup structure.
+            if (e.features[0].properties.Municipality == 'City of Eugene and Gresham'){
+                description = ''
+                description += e.features[0].properties.Logo
+                description += "<br> Partner: " + e.features[0].properties.Municipality;
+                description += "<br> Year: " + e.features[0].properties.Year;
+                description += "<br><br>Dual partnership with City of Eugene";
+                description += "<br>" + e.features[0].properties.ReportsLink;
+                
+            }
            
-           
-
-
+            // addds popup to map
             new mapboxgl.Popup()
                 .setLngLat(coordinates)
                 .setHTML(description) // the string in the description var is added to the popup here
@@ -638,11 +736,13 @@
         
         */
         
+        // allows cursor to change when hovering over buttons/links
          map.getCanvas().style.cursor = 'auto';
         
-                 // Allow description pannel to be collapsed
+        // allows description pannel to be collapsed
          var state = { panelOpen: true };
 
+        // allows description pannel to be collapsed
          function panelSelect(e){
             if(state.panelOpen){
               document.getElementById('descriptionPanel').style.height = '26px';
