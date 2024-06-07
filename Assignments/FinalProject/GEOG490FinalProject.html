@@ -24,18 +24,18 @@
       <!--      Website's "favicon"-->
       <link rel="icon" type="image/x-icon" href="https://sci.uoregon.edu/sites/default/files/scyp_sqr_green.jpg">
       
+      <!--      source for font-->
       <link rel="preconnect" href="https://fonts.googleapis.com">
       <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
       <link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:ital,wght@0,200..900;1,200..900&display=swap" rel="stylesheet">
 
     <style>
-
         
         body { margin:0; padding:0; }
         #map { position:absolute; top:0; bottom:0; width:100%; }
         
         #title { z-index: 9999; 
-             background-color:white; 
+             background-color: green; /* green */ 
              opacity: 80%; 
              text-align: center}   
 
@@ -96,6 +96,17 @@
          margin-left: 10px;
          font-family: "Source Sans 3", Arial, Helvetica, Verdana, sans-serif;   
        }
+      
+        h5 {
+        color: white;
+         font-family: "Source Sans 3", Arial, Helvetica, Verdana, sans-serif;   
+       }
+        
+        h1 {
+        color: white;
+         margin-left: 10px;
+         font-family: "Source Sans 3", Arial, Helvetica, Verdana, sans-serif;   
+       }
         
         /* style for p tags */
        p {
@@ -111,7 +122,7 @@
            font-style: normal;
         }
         
-        .mapboxgl-popup-content{
+       .mapboxgl-popup-content{
          font-family: "Source Sans 3", Arial, Helvetica, Verdana, sans-serif; sans-serif;
         }
 
@@ -127,23 +138,23 @@
     <div class="descriptionPanel" id="descriptionPanel" style="height: 250px;">
     <span onClick=panelSelect() id="glyph" class="chevron glyphicon glyphicon-chevron-down"></span>
          <hr/>
-     <h4>WHO HAS SCYP PARNTERED WITH TO DATE?</h4>
+<!--     <h4>WHO HAS SCYP PARNTERED WITH TO DATE?</h4>-->
      <p style="margin-left: 10px; margin-right: 10px;">
-       This is an interactive map showing the locations of Sustainable City Year Program (SCYP) partnership locations across the state of Oregon. Click on a point to learn more about each patership and the student reports generated from them!
+       This is an interactive map showing the locations of Sustainable City Year Program (SCYP) partnership locations across the state of Oregon. Click on one of the black points to learn more about each patership and the student reports generated from them!
          
     </p>
     </div>  
 
-      
-    <!--  Insert the tile div here -->
-
-    
-      
+    <!--      Title DIV-->
+    <div id = 'title'>
+        <h1>WHO HAS SCYP PARNTERED WITH TO DATE?</h1>
+        <h5>By: Aidan Austin, CC BY-NC 4.0</h5>   
+      </div>
       
 
     <script>
         // access token
-        mapboxgl.accessToken = 'pk.eyJ1IjoiYWF1c3RpbjMiLCJhIjoiY2x1bGhqNTN1MGZ1ZzJxbzFjZGt0dzZoaCJ9.773k7xv2KGU-A4eAPwZvcQ'; //  Put your access token between the single quotes.
+        mapboxgl.accessToken = 'pk.eyJ1IjoiYWF1c3RpbjMiLCJhIjoiY2x1bGhqNTN1MGZ1ZzJxbzFjZGt0dzZoaCJ9.773k7xv2KGU-A4eAPwZvcQ';
         
                 // GeoJSON list containing attributes to every point
                 var places = {
@@ -516,10 +527,32 @@
                         "type": "Point"
                       },
                       "id": 17
+                    },
+                     {
+                      "type": "Feature",
+                      "properties": {
+                        "Year": "2014-2015",
+                        "marker-color": "#00000",
+                        "Municipality": "Metro, Multnomah County, Troutdale, and Gresham",
+                        "ClassesAmount": 0,
+                        "ProjectsAmount": "<a href=\"https://sci.uoregon.edu/sites/default/files/metro_area.pdf\">Explore one pager of student projects",
+                        "ReportsLink":"<a href=\"https://sci.uoregon.edu/sites/default/files/metro_area.pdf\">Explore student projects summary" + "<br>"+ "<a href=\"https://scholarsbank.uoregon.edu/xmlui/handle/1794/22534\">Explore the student reports",
+                        "Logo": '<img class="popupImage" alt=“Metro Logo" src="partner_logos/PP_metro.jpg?maxwidth=1300&maxheight=1300&autorotate=fale">'
+                      },
+                      "geometry": {
+                        "coordinates": [
+                          -122.56456,
+                          45.53266
+                        ],
+                        "type": "Point"
+                      },
+                      "id": 18
                     }
                   ]
                 }
-     /*
+  
+                
+                /*
 //                
               BASIC STRUCTIRE of each Geo JSON point *********************************  
                 
@@ -544,26 +577,24 @@
                   },
                   "id": use highest number
                 },
-                
-                
         */ 
 
 //        bounds to prevent people from scrolling to the abyss         
 		var bounds = [
-		    [-125.8996, 40.725096], // Southwest coordinates
+		    [-129.8996, 40.725096], // Southwest coordinates
 		    [-114.54596, 46.70853] // Northeast coordinates 
 		];
         
         
 //        initialize map 
-        var map = new mapboxgl.Map({container: 'map', // Choose from Mapbox's core styles, or make your own style with Mapbox Studio
-  //    style: 'mapbox://styles/mapbox/light-v10',
- //       style: 'mapbox://styles/mapbox/streets-v12',
-        style: 'mapbox://styles/aaustin3/clx2abiob01pl01rd6xjnh2ea',
-        zoom: 5, // set initial zoom
+        var map = new mapboxgl.Map({container: 'map',
+    style: 'mapbox://styles/mapbox/light-v10', // initial style
+ //       style: 'mapbox://styles/mapbox/streets-v12', // initial style
+    //    style: 'mapbox://styles/aaustin3/clx2abiob01pl01rd6xjnh2ea', // special customized style
+        zoom: 6.25, // set initial zoom
         maxBounds: bounds, // set bounds
         maxZoom: 11,    // set max zoom point                        
-        center: [-120.8580352, 43.9749298] // set center
+        center: [-120.662,44.668]// [-120.8580352, 43.9749298] // set center
                                     })        
         
         // Map's On 'load' function.
@@ -580,6 +611,40 @@
                 'id': layerID,
                 'type': 'circle',
                 'source': 'places',
+                'paint':{
+                    // Use step expressions (https://docs.mapbox.com/style-spec/reference/expressions/#step)
+                // with three steps to implement three types of circles:
+                //   * Blue, 20px circles when point count is less than 100
+                //   * Yellow, 30px circles when point count is between 100 and 750
+                //   * Pink, 40px circles when point count is greater than or equal to 750
+                'circle-color': 'blue',
+                    
+//                    [
+//                    'step',
+//                    ['get', 'point_count'],
+//                    '#51bbd6',
+//                    100,
+//                    '#f1f075',
+//                    750,
+//                    '#f28cb1'
+            //    ],
+                    
+                'circle-radius': 8,
+                    
+                'circle-stroke-width': 2,
+                'circle-stroke-color': '#fff'
+                    
+//                    [
+//                    'step',
+//                    ['get', 'point_count'],
+//                    20,
+//                    100,
+//                    30,
+//                    750,
+//                    40
+//                ]
+
+                },
                 'layout': {
                     'icon-image': 'marker-15',
                     'icon-allow-overlap': true
@@ -598,7 +663,7 @@
         });
         
            // When a click event occurs on a feature in the places layer, 
-          // open a popup at the location of the feature, with description HTML from its properties.
+          // open a popup at the location of the feature.
         map.on('click', 'places', function (e) {
             var coordinates = e.features[0].geometry.coordinates.slice();
             
@@ -681,7 +746,7 @@
                 description += e.features[0].properties.Logo
                 description += "<br> Partner: " + e.features[0].properties.Municipality;
                 description += "<br> Year: " + e.features[0].properties.Year;
-                description += "<br><br>Dual partnership with City of Eugene";
+            //    description += "<br><br>Dual partnership with City of Eugene";
                 description += "<br>" + e.features[0].properties.ReportsLink;
                 
             }
@@ -693,49 +758,6 @@
                 .addTo(map);
           });
         
-//                    var description = "This is a map point <br> Year: " + 
-        
-        //     style: 'mapbox://styles/mapbox/streets-v11', // stylesheet location
-        /*
-        
-        var bound1 = new mapboxgl.Marker({color:'tan'})
-        .setLngLat([-125.8996, 40.725096]) // starting position [lng, lat] 
-        .addTo(map); // add the open market to the map
-        
-        var bound2 = new mapboxgl.Marker({color:'tan'})
-        .setLngLat([-114.74596, 46.70853]) // starting position [lng, lat] 
-        .addTo(map); // add the open market to the map
-        
-   
-
-        // Add popup markers here  (part IV)
-        
-        var salempopup_content = '<h2>Play the video to listen to Portland</h2><br>';
-
-        
-        
-         var salempopup = new mapboxgl.Popup({ offset: 25 })
-        .setHTML(salempopup_content);
-        
-        // Add any other variables such as markers here (part III)
-        
-         var marker = new mapboxgl.Marker({color:'tan'})
-        .setLngLat([-123.04175, 44.93616]) // starting position [lng, lat] 
-        .setPopup(salempopup) // //add the popup with the variable name 'popup' to the marker 
-        .addTo(map); // add the open market to the map
-        
-       
-         var tigardmarker = new mapboxgl.Marker({color:'green'})
-         .setLngLat([-122.76727, 45.42503]) // starting position [lng, lat] 
-         .addTo(map)
-
-         var tigard = new mapboxgl.Popup({closeOnClick: false, anchor: 'top-right'})
-         .setLngLat([-122.76727, 45.42503])
-         .setHTML ('Tigard')
-         .addTo(map);
-
-        
-        */
         
         // allows cursor to change when hovering over buttons/links
          map.getCanvas().style.cursor = 'auto';
