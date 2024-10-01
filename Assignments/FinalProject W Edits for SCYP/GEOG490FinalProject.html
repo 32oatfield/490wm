@@ -1,0 +1,793 @@
+<!DOCTYPE html>
+<html>
+
+  <head>      
+      <meta charset='utf-8' />
+      <title>SCYP Projects Map</title>
+   
+      <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+   
+      <!--    The Mapbox JavaScript here in the <head> of the page    -->
+      <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v3.3.0/mapbox-gl.js'></script>
+     
+      <!--    The Mapbox CSS here in the <head> of the page    -->
+      <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v3.3.0/mapbox-gl.css' rel='stylesheet' />
+      
+      
+      <!--   Head materials for Zoom buttons-->
+      <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no">
+      <link href="https://api.mapbox.com/mapbox-gl-js/v3.3.0/mapbox-gl.css" rel="stylesheet">
+      <script src="https://api.mapbox.com/mapbox-gl-js/v3.3.0/mapbox-gl.js"></script>
+      
+      <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+      
+      <!--      Website's "favicon"-->
+      <link rel="icon" type="image/x-icon" href="https://sci.uoregon.edu/sites/default/files/scyp_sqr_green.jpg">
+      
+      <!--      source for font-->
+      <link rel="preconnect" href="https://fonts.googleapis.com">
+      <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+      <link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:ital,wght@0,200..900;1,200..900&display=swap" rel="stylesheet">
+
+    <style>
+        
+        body { margin:0; padding:0; }
+        #map { position:absolute; top:0; bottom:0; width:100%; }
+        
+        #title { z-index: 9999; 
+             background-color: darkgreen; /* green */ 
+             opacity: 80%; 
+             text-align: center}   
+
+        h2 {font-family: cursive; color: blue}
+        
+                /* Insert the CSS for the image here */
+        .popupImage{
+            width: 100%
+        }
+        
+      /*  style for items with the class "descriptionPanel" */
+       .descriptionPanel {
+         position: absolute;
+         bottom: 20px;
+         right: 10px;
+         margin-left: 20px;
+         z-index: 2;
+         width: 250px;
+         height: 40px;
+         background: rgba(80, 80, 80, .75);
+         transition: width 2s, height 2s;
+         overflow: hidden;
+         border-radius: 7px;
+       }
+
+       /*  style for items with the class "descriptionPanel" when active */
+       .LegendContainer:active {
+         width: 20px;
+         height: 20px;
+       }
+
+       /* style for items with the class "legendItem" */
+       .legendItem {
+           margin: 0px;
+           padding-left: 10px;
+           display:inline-block;
+           margin:auto;
+           transform: translate(50%, 50%);
+       }
+
+
+       /* style for items with the class "layerDescription" */
+       .layerDescription {
+         color: white;
+         padding-left: 10px;
+       }
+
+       /* style for items with the class "chevron" */
+       .chevron {
+         position: relative;
+         margin-left: 45%;
+         font-size: x-large;
+         color: white;
+       }
+        
+               /* style for heading level 4 tags */
+       h4 {
+         color: white;
+         margin-left: 10px;
+         font-family: "Source Sans 3", Arial, Helvetica, Verdana, sans-serif;   
+       }
+      
+        h5 {
+        color: white;
+         font-family: "Source Sans 3", Arial, Helvetica, Verdana, sans-serif;  
+        text-align: center;
+       }
+        
+        h1 {
+        color: white;
+         margin-left: 10px;
+         font-family: "Source Sans 3", Arial, Helvetica, Verdana, sans-serif;   
+       }
+        
+        /* style for p tags */
+       p {
+         color: white;
+         margin-left: 10px;
+         font-family: "Source Sans 3"
+       }
+        
+       .source-sans-3-<uniquifier> {
+           font-family: "Source Sans 3", sans-serif;
+           font-optical-sizing: auto;
+           font-weight: 300;
+           font-style: normal;
+        }
+        
+       .mapboxgl-popup-content{
+         font-family: "Source Sans 3", Arial, Helvetica, Verdana, sans-serif; sans-serif;
+        }
+
+    </style>
+  </head>
+
+  <body>
+    <!--  Insert the map div here in the <body> of the page  -->
+    <div id='map'></div>
+      
+      
+    <!--      initialize description panel-->
+    <div class="descriptionPanel" id="descriptionPanel" style="height: 60px;">
+<!--     <h4>WHO HAS SCYP PARNTERED WITH TO DATE?</h4>-->
+     <p style="margin-left: 10px; margin-right: 10px;">
+        <h5>By: Aidan Austin, CC BY-NC 4.0</h5>   
+        <h5>Data Source: <a href="https://scyp.uoregon.edu">University of Oregon SCYP</a></h5>  
+    </p>
+    </div>  
+
+
+    
+    <script>
+        // access token
+        mapboxgl.accessToken = 'pk.eyJ1IjoiYWF1c3RpbjMiLCJhIjoiY2x1bGhqNTN1MGZ1ZzJxbzFjZGt0dzZoaCJ9.773k7xv2KGU-A4eAPwZvcQ';
+        
+                // GeoJSON list containing attributes to every point
+                var places = {
+                  "type": "FeatureCollection",
+                  "features": [
+                    {
+                      "type": "Feature",
+                      "properties": {
+                        "Year": 2022,
+                        "marker-color": "#000000",
+                        "Municipality": "City of Tigard",
+                        "ClassesAmount": "0",
+                        "ProjectsAmount": "0",
+                        "Logo": '<img class="popupImage" alt=“City of Tigard Logo" src="partner_logos/PP_tigard.jpg?maxwidth=1300&maxheight=1300&autorotate=fale">',
+                        "ReportsLink": "<a href=\"https://scholarsbank.uoregon.edu/xmlui/handle/1794/28524\">View Reports"
+                      },
+                      "geometry": {
+                        "coordinates": [
+                          -122.77174194312182,
+                          45.430877067004104
+                        ],
+                        "type": "Point"
+                      },
+                      "id": 0
+                    },
+                    {
+                      "type": "Feature",
+                      "properties": {
+                        "Year": "2009-2010",
+                        "marker-color": "#000000",
+                        "Municipality": "City of Gresham",
+                        "PartnershipType": "Yearlong Partnership",
+                        "ClassesAmount": 12,
+                        "ProjectsAmount": "<a href=\"https://sci.uoregon.edu/sites/default/files/1_pager_gresham.pdf\">Number of Projects: 12",
+                        "Logo": '<img class="popupImage" alt=“City of Gresham Logo" src="partner_logos/PP_gresham.jpg?maxwidth=1300&maxheight=1300&autorotate=fale">',
+                        "ReportsLink": "<a href=\"https://scholarsbank.uoregon.edu/xmlui/handle/1794/10382\">View the 2009-2010 student reports",
+                        "Year2": "2018-2019",
+                        "ClassesAmount2": "0",
+                        "ProjectsAmount2": "<a href=\"https://sci.uoregon.edu/sites/default/files/eugenegresham_18-19_0.pdf\">Explore student projects summary",
+                        "ReportsLink2": "<a href=\"https://scholarsbank.uoregon.edu/xmlui/handle/1794/24506\">View the 2018-19 student reports",
+                        "Logo2": '<img class="popupImage" alt=“City of Gresham Logo" src="partner_logos/PP_EugeneGresham.jpg?maxwidth=1300&maxheight=1300&autorotate=fale">'
+
+                      },
+                      "geometry": {
+                        "coordinates": [
+                          -122.43303233518739,
+                          45.49787860668533
+                        ],
+                        "type": "Point"
+                      },
+                      "id": 1
+                    },
+                    {
+                      "type": "Feature",
+                      "properties": {
+                        "Year": "2010-2011",
+                        "marker-color": "#000000",
+                        "Municipality": "City of Salem",
+                        "PartnershipType": "Yearlong Partnership",
+                        "ClassesAmount": 18,
+                        "ProjectsAmount": "<a href=\"https://sci.uoregon.edu/sites/default/files/salem.pdf\">Number of Projects: 18",
+                        "Logo": '<img class="popupImage" alt=“City of Salem Logo" src="partner_logos/PP_salem.jpg?maxwidth=1300&maxheight=1300&autorotate=fale">',
+                        "ReportsLink": "<a href=\"https://scholarsbank.uoregon.edu/xmlui/handle/1794/11432\">View the 2010-11 student reports",
+                        "Year2": "2023-24",
+                        "ClassesAmount2": 18,
+                        "ProjectsAmount2": "<a href=\"https://sci.uoregon.edu/sites/default/files/2024-04/1_pager_salem.pdf\">Number of Projects: 18",
+                        "ReportsLink2": "<a href=\"https://scholarsbank.uoregon.edu/xmlui/handle/1794/28914\">View the 2023-24 student reports"
+                      },
+                      "geometry": {
+                        "coordinates": [
+                          -123.0330943742238,
+                          44.939033107414275
+                        ],
+                        "type": "Point"
+                      }
+                    },
+                    {
+                      "type": "Feature",
+                      "properties": {
+                        "Year": "2011-2012",
+                        "marker-color": "#000000",
+                        "Municipality": "City of Springfield",
+                        "PartnershipType": "Yearlong Partnership",
+                        "ClassesAmount": 22,
+                        "ProjectsAmount": "<a href=\"https://sci.uoregon.edu/sites/default/files/springfield.pdf\">Number of Projects: 22",
+                        "Logo": '<img class="popupImage" alt=“City of Springfield Logo" src="partner_logos/PP_springfield.jpg?maxwidth=1300&maxheight=1300&autorotate=fale">',
+                        "ReportsLink": "<a href=\"https://scholarsbank.uoregon.edu/xmlui/handle/1794/12608\">View the 2011-12 student reports",
+                        "Year2": "2018-19",
+                        "ClassesAmount2": '0',
+                        "ProjectsAmount2": "0",
+                        "ReportsLink2": "<a href=\"https://scholarsbank.uoregon.edu/xmlui/handle/1794/24507\">View the 2018-19 student reports"
+                      },
+                      "geometry": {
+                        "coordinates": [
+                          -123.02210960745988,
+                          44.04609726968138
+                        ],
+                        "type": "Point"
+                      },
+                      "id": 3
+                    },
+                    {
+                      "type": "Feature",
+                      "properties": {
+                        "Year": "2013-2014",
+                        "marker-color": "#000000",
+                        "Municipality": "City of Medford",
+                        "PartnershipType": "Yearlong Partnership",
+                        "ClassesAmount": 17,
+                        "ProjectsAmount": "<a href=\"https://sci.uoregon.edu/sites/default/files/medford.pdf\">Number of Projects: 17",
+                        "ReportsLink": "<a href=\"https://scholarsbank.uoregon.edu/xmlui/handle/1794/16076\">View Reports",
+                        "Logo": '<img class="popupImage" alt=“City of Medford Logo" src="partner_logos/PP_medford.jpg?maxwidth=1300&maxheight=1300&autorotate=fale">'
+                      },
+                      "geometry": {
+                        "coordinates": [
+                          -122.87113037851068,
+                          42.32649458096134
+                        ],
+                        "type": "Point"
+                      },
+                      "id": 4
+                    },
+                    {
+                      "type": "Feature",
+                      "properties": {
+                        "Year": "2015-2016",
+                        "marker-color": "#000000",
+                        "Municipality": "City of Redmond",
+                        "PartnershipType": "Yearlong Partnership",
+                        "ClassesAmount": 19,
+                        "ProjectsAmount": "<a href=\"https://sci.uoregon.edu/sites/default/files/redmond.pdf\">Number of Projects: 24",
+                        "ReportsLink": "<a href=\"https://scholarsbank.uoregon.edu/xmlui/handle/1794/19989\">View Reports",
+                        "Logo": '<img class="popupImage" alt=“City of Redmond Logo" src="partner_logos/PP_redmond.jpg?maxwidth=1300&maxheight=1300&autorotate=fale">'
+                      },
+                      "geometry": {
+                        "coordinates": [
+                          -121.17338174512942,
+                          44.27257865841736
+                        ],
+                        "type": "Point"
+                      }
+                    },
+                    {
+                      "type": "Feature",
+                      "properties": {
+                        "Year": "2016-2017",
+                        "marker-color": "#000000",
+                        "Municipality": "City of Albany",
+                        "PartnershipType": "Yearlong Partnership",
+                        "ClassesAmount": 23,
+                        "ProjectsAmount": "<a href=\"https://sci.uoregon.edu/sites/default/files/albany.pdf\">Number of Projects: 22",
+                        "ReportsLink": "<a href=\"https://scholarsbank.uoregon.edu/xmlui/handle/1794/22452\">View Reports",
+                        "Logo": '<img class="popupImage" alt=“City of Albany Logo" src="partner_logos/PP_Albany.jpg?maxwidth=1300&maxheight=1300&autorotate=fale">'
+                      },
+                      "geometry": {
+                        "coordinates": [
+                          -123.10531904262845,
+                          44.63607466537965
+                        ],
+                        "type": "Point"
+                      }
+                    },
+                    {
+                      "type": "Feature",
+                      "properties": {
+                        "Year": "2017-2018",
+                        "marker-color": "#000000",
+                        "Municipality": "City of LaPine",
+                        "PartnershipType": "Yearlong Partnership",
+                        "ClassesAmount": 9,
+                        "ProjectsAmount": "<a href=\"https://sci.uoregon.edu/sites/default/files/la_pine_2.pdf\">Number of Projects: 12",
+                        "ReportsLink": "<a href=\"https://scholarsbank.uoregon.edu/xmlui/handle/1794/23229\">View Reports",
+                        "Logo": '<img class="popupImage" alt=“City of LaPine Logo" src="partner_logos/PP_LaPine.jpg?maxwidth=1300&maxheight=1300&autorotate=fale">'
+                      },
+                      "geometry": {
+                        "coordinates": [
+                          -121.50427203261302,
+                          43.670267757043035
+                        ],
+                        "type": "Point"
+                      }
+                    },
+                    {
+                      "type": "Feature",
+                      "properties": {
+                        "Year": "2018-2019",
+                        "marker-color": "#000000",
+                        "Municipality": "Dunes City",
+                        "PartnershipType": "Special",
+                        "ClassesAmount": "0",
+                        "ProjectsAmount": "0",
+                        "ReportsLink": "<a href=\"https://scholarsbank.uoregon.edu/xmlui/handle/1794/24623\">View Reports",
+                        "Logo": '<img class="popupImage" alt=“Logo of Dunes City, Oregon" src="partner_logos/PP_dunes.jpg?maxwidth=1300&maxheight=1300&autorotate=fale">'
+                      },
+                      "geometry": {
+                        "coordinates": [
+                          -124.11642500963316,
+                          43.88309286066601
+                        ],
+                        "type": "Point"
+                      },
+                      "id": 8
+                    },
+                    {
+                      "type": "Feature",
+                      "properties": {
+                        "Year": "2019-2020",
+                        "marker-color": "#000000",
+                        "Municipality": "City of Silverton",
+                        "PartnershipType": "Yearlong Partnership",
+                        "ClassesAmount": 5,
+                        "ProjectsAmount": "<a href=\"https://sci.uoregon.edu/sites/default/files/silverton.pdf\">Number of Projects: 5",
+                        "ReportsLink": "<a href=\"https://scholarsbank.uoregon.edu/xmlui/handle/1794/25327\">View Reports",
+                        "Logo": '<img class="popupImage" alt=“City of Silverton Logo" src="partner_logos/PP_silverton.jpg?maxwidth=1300&maxheight=1300&autorotate=fale">'
+                      },
+                      "geometry": {
+                        "coordinates": [
+                          -122.78322097536952,
+                          45.00498492830718
+                        ],
+                        "type": "Point"
+                      }
+                    },
+                    {
+                      "type": "Feature",
+                      "properties": {
+                        "Year": "2020-2021",
+                        "marker-color": "#000000",
+                        "Municipality": "City of Troutdale",
+                        "PartnershipType": "Yearlong Partnership",
+                        "ClassesAmount": 19,
+                        "ProjectsAmount": "<a href=\"https://www.dropbox.com/s/noctedz010d2twe/1%20pager_Troutdale-mbupdate092721.pdf?dl=0\">Number of Projects: 17",
+                        "Logo": '<img class="popupImage" alt=“City of Troutdale Logo" src="partner_logos/PP_troutdale.jpg?maxwidth=1300&maxheight=1300&autorotate=fale">',
+                        "ReportsLink": "<a href=\"https://scholarsbank.uoregon.edu/xmlui/handle/1794/26145\">View Reports"
+                      },
+                      "geometry": {
+                        "coordinates": [
+                          -122.38813416890818,
+                          45.54130327782761
+                        ],
+                        "type": "Point"
+                      },
+                      "id": 10
+                    },
+                    {
+                      "type": "Feature",
+                      "properties": {
+                        "Year": "2021-2022",
+                        "marker-color": "#000000",
+                        "Municipality": "City of Hermiston",
+                        "PartnershipType": "Yearlong Partnership",
+                        "ClassesAmount": 7,
+                        "ProjectsAmount": "<a href=\"https://sci.uoregon.edu/sites/default/files/1_pager_hermiston_v2.pdf\">Number of Projects: 5",
+                        "ReportsLink": "<a href=\"https://scholarsbank.uoregon.edu/xmlui/handle/1794/27098\">View Reports",
+                        "Logo": '<img class="popupImage" alt=“City of Hermiston Logo" src="partner_logos/PP_hermiston.jpg?maxwidth=1300&maxheight=1300&autorotate=fale">'
+                      },
+                      "geometry": {
+                        "coordinates": [
+                          -119.28895960765314,
+                          45.839797295254755
+                        ],
+                        "type": "Point"
+                      },
+                      "id": 11
+                    },
+                    {
+                      "type": "Feature",
+                      "properties": {
+                        "Year": "2022-2023",
+                        "marker-color": "#000000",
+                        "Municipality": "City of Sisters",
+                        "PartnershipType": "Yearlong Partnership",
+                        "ClassesAmount": 7,
+                        "ProjectsAmount": "<a href=\"https://sci.uoregon.edu/sites/default/files/2023-10/1_pager_sisters.pdf\">Number of Projects: 5",
+                        "ReportsLink": "<a href=\"https://scholarsbank.uoregon.edu/xmlui/handle/1794/27905\">View Reports",
+                        "Logo": '<img class="popupImage" alt=“City of Sisters Logo" src="partner_logos/PP_sisters.jpg?maxwidth=1300&maxheight=1300&autorotate=fale">'
+                      },
+                      "geometry": {
+                        "coordinates": [
+                          -121.54926758613396,
+                          44.291227950624574
+                        ],
+                        "type": "Point"
+                      },
+                      "id": 12
+                    },
+                    {
+                      "type": "Feature",
+                      "properties": {
+                        "Year": 2023,
+                        "marker-color": "#000000",
+                        "Municipality": "City of Corvallis",
+                        "PartnershipType": "Special",
+                        "ClassesAmount": "0",
+                        "ProjectsAmount": "0",
+                        "ReportsLink": "<a href=\"https://scholarsbank.uoregon.edu/xmlui/handle/1794/29409\">View Reports",
+                        "Logo": '<img class="popupImage" alt=“City of Corvallis Logo" src="partner_logos/PP_corvallis.jpg?maxwidth=1300&maxheight=1300&autorotate=fale">'
+                      },
+                      "geometry": {
+                        "coordinates": [
+                          -123.26199092850216,
+                          44.56388587676517
+                        ],
+                        "type": "Point"
+                      }
+                    },
+                    {
+                      "type": "Feature",
+                      "properties": {
+                        "Year": 2020,
+                        "marker-color": "#000000",
+                        "Municipality": "City of Hood River",
+                        "PartnershipType": "Special",
+                        "ClassesAmount": "0",
+                        "ProjectsAmount": "0",
+                        "ReportsLink": "<a href=\"https://scholarsbank.uoregon.edu/xmlui/handle/1794/25400\">View Reports",
+                        "Logo": '<img class="popupImage" alt=“City of HoodRiver Logo" src="partner_logos/PP_HoodRiver.jpg?maxwidth=1300&maxheight=1300&autorotate=fale">'
+                      },
+                      "geometry": {
+                        "coordinates": [
+                          -121.52043225467611,
+                          45.70582423442468
+                        ],
+                        "type": "Point"
+                      },
+                      "id": 14
+                    },
+                    {
+                      "type": "Feature",
+                      "properties": {
+                        "marker-color": "#0400ff",
+                        "Year": "2017-2018",
+                        "Municipality": "TriMet",
+                        "PartnershipType": "Yearlong Partnership",
+                        "ClassesAmount": 26,
+                        "ProjectsAmount": "<a href=\"https://sci.uoregon.edu/sites/default/files/trimet.pdf\">Number of Projects: 24",
+                        "ReportsLink": "<a href=\"https://scholarsbank.uoregon.edu/xmlui/handle/1794/23230\">View Reports",
+                        "Logo": '<img class="popupImage" alt=“Logo of TriMet - the Tri-County Metropolitian Transportation District of Oregon" src="partner_logos/PP_TriMetAlt.jpg?maxwidth=1300&maxheight=1300&autorotate=fale">'
+                      },
+                      "geometry": {
+                        "coordinates": [
+                          -122.67406434229036,
+                          45.519447448109474
+                        ],
+                        "type": "Point"
+                      },
+                      "id": 15
+                    },
+                    {
+                      "type": "Feature",
+                      "properties": {
+                        "Year": "2019-2020",
+                        "marker-color": "#0400ff",
+                        "Municipality": "Lane Transit District",
+                        "PartnershipType": "Yearlong Partnership",
+                        "ClassesAmount": 19,
+                        "ProjectsAmount": "<a href=\"https://sci.uoregon.edu/sites/default/files/1_pager_ltd.pdf\">Number of Projects: 23",
+                        "ReportsLink": "<a href=\"https://scholarsbank.uoregon.edu/xmlui/handle/1794/24622\">View Reports",
+                        "Logo": '<img class="popupImage" alt=“Lane Transit District (LTD) Logo" src="partner_logos/PP_LTD.jpg?maxwidth=1300&maxheight=1300&autorotate=fale">'
+                      },
+                      "geometry": {
+                        "coordinates": [
+                          -123.09937899405375,
+                          44.04873657055694
+                        ],
+                        "type": "Point"
+                      },
+                      "id": 16
+                    },
+                                          {
+                      "type": "Feature",
+                      "properties": {
+                        "Year": "2018-2019",
+                        "marker-color": "#00000",
+                        "Municipality": "City of Eugene and Gresham",
+                        "PartnershipType": "Yearlong Partnership",
+                        "ClassesAmount": 0,
+                        "ProjectsAmount": "<a href=\"https://sci.uoregon.edu/sites/default/files/eugenegresham_18-19_0.pdf\">Explore one pager of student projects",
+                        "ReportsLink":"<a href=\"https://sci.uoregon.edu/sites/default/files/eugenegresham_18-19_0.pdf\">Explore student projects summary" + "<br>"+ "<a href=\"https://scholarsbank.uoregon.edu/xmlui/handle/1794/24506\">View Reports",
+                        "Logo": '<img class="popupImage" alt=“Lane Transit District (LTD) Logo" src="partner_logos/PP_EugeneGresham.jpg?maxwidth=1300&maxheight=1300&autorotate=fale">'
+                      },
+                      "geometry": {
+                        "coordinates": [
+                          -123.09037899405375,
+                          44.04873657055694
+                        ],
+                        "type": "Point"
+                      },
+                      "id": 17
+                    },
+                     {
+                      "type": "Feature",
+                      "properties": {
+                        "Year": "2014-2015",
+                        "marker-color": "#00000",
+                        "Municipality": "Metro, Multnomah County, Troutdale, and Gresham",
+                        "PartnershipType": "Yearlong Partnership",
+                        "ClassesAmount": 0,
+                        "ProjectsAmount": "<a href=\"https://sci.uoregon.edu/sites/default/files/metro_area.pdf\">Explore one pager of student projects",
+                        "ReportsLink":"<a href=\"https://sci.uoregon.edu/sites/default/files/metro_area.pdf\">Explore student projects summary" + "<br>"+ "<a href=\"https://scholarsbank.uoregon.edu/xmlui/handle/1794/22534\">View Reports",
+                        "Logo": '<img class="popupImage" alt=“Metro Logo" src="partner_logos/PP_metro.jpg?maxwidth=1300&maxheight=1300&autorotate=fale">'
+                      },
+                      "geometry": {
+                        "coordinates": [
+                          -122.56456,
+                          45.53266
+                        ],
+                        "type": "Point"
+                      },
+                      "id": 18
+                    }
+                  ]
+                }
+  
+                
+                /*
+//                
+              BASIC STRUCTIRE of each Geo JSON point *********************************  
+                
+                                {
+                  "type": "Feature",
+                  "properties": {
+                    "marker-color": "#0400ff",
+                    "Year": "year-year",
+                    "Municipality": "nameOfMunicipality"
+                   
+                "ClassesAmount": (ENTER # OF CLASSES),
+                "ProjectsAmount": "<a href=\"[INCLUDE LINK TO ONE PAGER]\">Number of projects: [insrt # of projects HERE]",
+                "ReportsLink": "<a href=\"https://scholarsbank.uoregon.edu/xmlui/handle/1794/24506\">View Reports",
+                "Logo": '<img class="popupImage" alt=“[ALT tag for image goes HERE]" src="partner_logos/[NAME OF PARTNER LOGO].jpg?maxwidth=1300&maxheight=1300&autorotate=fale">'
+                  },
+                  "geometry": {
+                    "coordinates": [
+                      lng,
+                      lat
+                    ],
+                    "type": "Point"
+                  },
+                  "id": use highest number, do not repeat any numbers
+                },
+        */ 
+
+//        bounds to prevent people from scrolling to the abyss         
+		var bounds = [
+		    [-129.8996, 40.725096], // Southwest coordinates
+		    [-114.54596, 46.70853] // Northeast coordinates 
+		];
+        
+        
+//        initialize map 
+        var map = new mapboxgl.Map({container: 'map',
+  //  style: 'mapbox://styles/mapbox/light-v10', // initial style
+ //       style: 'mapbox://styles/mapbox/streets-v12', // initial style
+        style: 'mapbox://styles/aaustin3/clx2abiob01pl01rd6xjnh2ea', // special customized style
+        zoom: 6.25, // set initial zoom
+        maxBounds: bounds, // set bounds
+        maxZoom: 11,    // set max zoom point                        
+        center: [-120.662,44.668]// [-120.8580352, 43.9749298] // set center
+                                    })        
+        
+        // Map's On 'load' function.
+        map.on('load', function () {
+             // loads in the places from GeoJSON
+            map.addSource('places', {
+                'type': 'geojson',
+                'data': places
+            });
+
+            // initialize the variable layerID
+            var layerID = 'places';
+            map.addLayer({
+                'id': layerID,
+                'type': 'circle',
+                'source': 'places',
+                'paint':{
+                    // Use step expressions (https://docs.mapbox.com/style-spec/reference/expressions/#step)
+                // with three steps to implement three types of circles:
+                //   * Blue, 20px circles when point count is less than 100
+                //   * Yellow, 30px circles when point count is between 100 and 750
+                //   * Pink, 40px circles when point count is greater than or equal to 750
+                'circle-color': 'blue',              
+//                    [
+//                    'step',
+//                    ['get', 'point_count'],
+//                    '#51bbd6',
+//                    100,
+//                    '#f1f075',
+//                    750,
+//                    '#f28cb1'
+//                ],
+                    
+                'circle-radius': 8,
+                    
+                'circle-stroke-width': 2,
+                'circle-stroke-color': '#fff'
+                    
+//                    [
+//                    'step',
+//                    ['get', 'point_count'],
+//                    20,
+//                    100,
+//                    30,
+//                    750,
+//                    40
+//                ]
+
+                },
+                'layout': {
+                    'icon-image': 'marker-15',
+                    'icon-allow-overlap': true
+                },
+            });
+            
+                // Change the cursor to a pointer when the mouse is over the places layer.
+                  map.on('mouseenter', layerID, function () {
+                       map.getCanvas().style.cursor = 'pointer';
+                  });
+
+                  // Change it back to a pointer when it leaves.
+                  map.on('mouseleave', layerID, function () {
+                         map.getCanvas().style.cursor = '';
+                  });
+         });
+        
+           // When a click event occurs on a feature in the places layer, 
+          // open a popup at the location of the feature.
+        map.on('click', 'places', function (e) {
+            var coordinates = e.features[0].geometry.coordinates.slice();
+            
+            // build out the description of the popup
+            var description = e.features[0].properties.Logo
+            description += e.features[0].properties.Municipality;
+            description += " - " + e.features[0].properties.Year;
+            
+            // adds the "yearlong partnership" tag if the project was a yearlong partership
+            if (e.features[0].properties.PartnershipType == 'Yearlong Partnership'){
+                description += "<br> Yearlong Partnership"
+                }
+            
+            // adds the number of classes, as long as there was a class (i.e. number is greater than zero)
+            if (e.features[0].properties.ClassesAmount != '0'){
+                description += "<br> Number of Classes: " + e.features[0].properties.ClassesAmount;
+            }
+            
+            // include the number of classes as long as the number of classes isn't zero
+            if (e.features[0].properties.ClassesAmount != '0'){
+                description += "<br>" + e.features[0].properties.ProjectsAmount;
+                }
+            
+            // if the number of clases is zero, list the partnership as a SPECIAL PROJECT
+            if (e.features[0].properties.ClassesAmount == '0'){
+                description += "<br>Special Project";
+                }
+
+            description += "<br>"+ e.features[0].properties.ReportsLink;
+            
+            // specicial popup for the City of Salem, which can't be built using the traditional popup structure.
+            if (e.features[0].properties.Municipality == 'City of Salem'){
+                description = ''
+                description += e.features[0].properties.Logo
+                description += "<br> Partner: " + e.features[0].properties.Municipality;
+                description += "<br><br> First Partnership Year: " + e.features[0].properties.Year;
+                description += "<br> Number of Classes: " + e.features[0].properties.ClassesAmount;
+                description += "<br> Number of Projects: " + e.features[0].properties.ProjectsAmount;
+                description += "<br>"+ e.features[0].properties.ReportsLink;
+                
+                
+                description += "</a><br><br> Second Partnership Year: " + e.features[0].properties.Year2;
+                description += "<br> Number of Classes: " + e.features[0].properties.ClassesAmount2;
+                description += "<br> Number of Projects: " + e.features[0].properties.ProjectsAmount2;
+                description += "<br>" + e.features[0].properties.ReportsLink2;
+                
+            }
+                  
+            // specicial popup for the City of Springfield, which can't be built using the traditional popup structure.    
+            if (e.features[0].properties.Municipality == 'City of Springfield'){
+                description = ''
+                description += e.features[0].properties.Logo
+                description += "<br> Partner: " + e.features[0].properties.Municipality;
+                description += "<br><br> First Partnership Year: " + e.features[0].properties.Year;
+                description += "<br> Number of Classes: " + e.features[0].properties.ClassesAmount;
+                description += "<br> Number of Projects: " + e.features[0].properties.ProjectsAmount;
+                description += "<br>"+ e.features[0].properties.ReportsLink;
+                
+                
+                description += "</a><br><br> Second Partnership Year: " + e.features[0].properties.Year2;
+                description += "<br>SPECIAL PROJECT";
+                description += "<br>" + e.features[0].properties.ReportsLink2;
+                
+            }
+            
+             // specicial popup for the City of Gresham, which can't be built using the traditional popup structure.
+            if (e.features[0].properties.Municipality == 'City of Gresham'){
+                description = ''
+                description += e.features[0].properties.Logo
+                description += "<br> Partner: " + e.features[0].properties.Municipality;
+                description += "<br><br> First Partnership Year: " + e.features[0].properties.Year;
+                description += "<br> Number of Classes: " + e.features[0].properties.ClassesAmount;
+                description += "<br> Number of Projects: " + e.features[0].properties.ProjectsAmount;
+                description += "<br>"+ e.features[0].properties.ReportsLink;
+                
+                description += "</a><br><br> Second Partnership Year: " + e.features[0].properties.Year2;
+                description += "<br>Dual partnership with City of Eugene";
+                description += "<br>" + e.features[0].properties.ProjectsAmount2;
+                description += "<br>" + e.features[0].properties.ReportsLink2;
+                
+            }
+            
+            // specicial popup for the City of Eugene/Gresham partnership, which can't be built using the traditional popup structure.
+            if (e.features[0].properties.Municipality == 'City of Eugene and Gresham'){
+                description = ''
+                description += e.features[0].properties.Logo
+                description += "<br> Partner: " + e.features[0].properties.Municipality;
+                description += "<br> Year: " + e.features[0].properties.Year;
+            //    description += "<br><br>Dual partnership with City of Eugene";
+                description += "<br>" + e.features[0].properties.ReportsLink;
+                
+            }
+           
+            // addds popup to map
+            new mapboxgl.Popup()
+                .setLngLat(coordinates)
+                .setHTML(description) // the string in the description var is added to the popup here
+                .addTo(map);
+          });
+        
+        
+        // allows cursor to change when hovering over buttons/links
+         map.getCanvas().style.cursor = 'auto';
+        
+        // allows description pannel to be collapsed
+         var state = { panelOpen: true };
+
+
+        // Add zoom and rotation controls to the map.
+        map.addControl(new mapboxgl.NavigationControl());
+    </script>
+
+  </body>
+
+</html>
