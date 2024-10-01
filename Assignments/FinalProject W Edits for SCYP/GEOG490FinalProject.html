@@ -236,11 +236,11 @@
                         "ClassesAmount": 22,
                         "ProjectsAmount": "<a href=\"https://sci.uoregon.edu/sites/default/files/springfield.pdf\">Number of Projects: 22",
                         "Logo": '<img class="popupImage" alt=“City of Springfield Logo" src="partner_logos/PP_springfield.jpg?maxwidth=1300&maxheight=1300&autorotate=fale">',
-                        "ReportsLink": "<a href=\"https://scholarsbank.uoregon.edu/xmlui/handle/1794/12608\">View the 2011-12 student reports",
+                        "ReportsLink": "<a href=\"https://scholarsbank.uoregon.edu/xmlui/handle/1794/12608\">View 2011-12 student reports",
                         "Year2": "2018-19",
                         "ClassesAmount2": '0',
                         "ProjectsAmount2": "0",
-                        "ReportsLink2": "<a href=\"https://scholarsbank.uoregon.edu/xmlui/handle/1794/24507\">View the 2018-19 student reports"
+                        "ReportsLink2": "<a href=\"https://scholarsbank.uoregon.edu/xmlui/handle/1794/24507\">View 2018-19 student reports"
                       },
                       "geometry": {
                         "coordinates": [
@@ -730,13 +730,14 @@
                 description += e.features[0].properties.Logo
                 description += "<br> Partner: " + e.features[0].properties.Municipality;
                 description += "<br><br> First Partnership Year: " + e.features[0].properties.Year;
+                description += "<br> Yearlong Partnership";
                 description += "<br> Number of Classes: " + e.features[0].properties.ClassesAmount;
-                description += "<br> Number of Projects: " + e.features[0].properties.ProjectsAmount;
+                description += "<br>" + e.features[0].properties.ProjectsAmount;
                 description += "<br>"+ e.features[0].properties.ReportsLink;
                 
                 
                 description += "</a><br><br> Second Partnership Year: " + e.features[0].properties.Year2;
-                description += "<br>SPECIAL PROJECT";
+                description += "<br>Special Project";
                 description += "<br>" + e.features[0].properties.ReportsLink2;
                 
             }
@@ -748,7 +749,7 @@
                 description += "<br> Partner: " + e.features[0].properties.Municipality;
                 description += "<br><br> First Partnership Year: " + e.features[0].properties.Year;
                 description += "<br> Number of Classes: " + e.features[0].properties.ClassesAmount;
-                description += "<br> Number of Projects: " + e.features[0].properties.ProjectsAmount;
+                description += "<br>" + e.features[0].properties.ProjectsAmount;
                 description += "<br>"+ e.features[0].properties.ReportsLink;
                 
                 description += "</a><br><br> Second Partnership Year: " + e.features[0].properties.Year2;
