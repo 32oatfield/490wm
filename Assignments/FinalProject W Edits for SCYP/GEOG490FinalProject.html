@@ -213,7 +213,7 @@
                         "ProjectsAmount": "<a href=\"https://sci.uoregon.edu/sites/default/files/salem.pdf\">Number of Projects: 18",
                         "Logo": '<img class="popupImage" alt=“City of Salem Logo" src="partner_logos/PP_salem.jpg?maxwidth=1300&maxheight=1300&autorotate=fale">',
                         "ReportsLink": "<a href=\"https://scholarsbank.uoregon.edu/xmlui/handle/1794/11432\">View the 2010-11 student reports",
-                        "Year2": "2023-24",
+                        "Year2": "2023-2024",
                         "ClassesAmount2": 18,
                         "ProjectsAmount2": "<a href=\"https://sci.uoregon.edu/sites/default/files/2024-04/1_pager_salem.pdf\">Number of Projects: 18",
                         "ReportsLink2": "<a href=\"https://scholarsbank.uoregon.edu/xmlui/handle/1794/28914\">View the 2023-24 student reports"
@@ -237,7 +237,7 @@
                         "ProjectsAmount": "<a href=\"https://sci.uoregon.edu/sites/default/files/springfield.pdf\">Number of Projects: 22",
                         "Logo": '<img class="popupImage" alt=“City of Springfield Logo" src="partner_logos/PP_springfield.jpg?maxwidth=1300&maxheight=1300&autorotate=fale">',
                         "ReportsLink": "<a href=\"https://scholarsbank.uoregon.edu/xmlui/handle/1794/12608\">View 2011-12 student reports",
-                        "Year2": "2018-19",
+                        "Year2": "2018-2019",
                         "ClassesAmount2": '0',
                         "ProjectsAmount2": "0",
                         "ReportsLink2": "<a href=\"https://scholarsbank.uoregon.edu/xmlui/handle/1794/24507\">View 2018-19 student reports"
@@ -546,7 +546,7 @@
                         "Year": "2014-2015",
                         "marker-color": "#00000",
                         "Municipality": "Metro, Multnomah County, Troutdale, and Gresham",
-                        "PartnershipType": "Yearlong Partnership",
+                //        "PartnershipType": "Yearlong Partnership",
                         "ClassesAmount": 0,
                         "ProjectsAmount": "<a href=\"https://sci.uoregon.edu/sites/default/files/metro_area.pdf\">Explore one pager of student projects",
                         "ReportsLink":"<a href=\"https://sci.uoregon.edu/sites/default/files/metro_area.pdf\">Explore student projects summary" + "<br>"+ "<a href=\"https://scholarsbank.uoregon.edu/xmlui/handle/1794/22534\">View Reports",
@@ -711,15 +711,17 @@
                 description = ''
                 description += e.features[0].properties.Logo
                 description += "<br> Partner: " + e.features[0].properties.Municipality;
-                description += "<br><br> First Partnership Year: " + e.features[0].properties.Year;
+                description += "<br><br>" + e.features[0].properties.Year;
+                description += "<br> Yearlong Partnership"
                 description += "<br> Number of Classes: " + e.features[0].properties.ClassesAmount;
-                description += "<br> Number of Projects: " + e.features[0].properties.ProjectsAmount;
+                description += "<br>" + e.features[0].properties.ProjectsAmount;
                 description += "<br>"+ e.features[0].properties.ReportsLink;
                 
                 
-                description += "</a><br><br> Second Partnership Year: " + e.features[0].properties.Year2;
+                description += "</a><br><br>" + e.features[0].properties.Year2;
+                description += "<br> Yearlong Partnership"
                 description += "<br> Number of Classes: " + e.features[0].properties.ClassesAmount2;
-                description += "<br> Number of Projects: " + e.features[0].properties.ProjectsAmount2;
+                description += "<br>" + e.features[0].properties.ProjectsAmount2;
                 description += "<br>" + e.features[0].properties.ReportsLink2;
                 
             }
@@ -729,14 +731,14 @@
                 description = ''
                 description += e.features[0].properties.Logo
                 description += "<br> Partner: " + e.features[0].properties.Municipality;
-                description += "<br><br> First Partnership Year: " + e.features[0].properties.Year;
+                description += "<br><br>" + e.features[0].properties.Year;
                 description += "<br> Yearlong Partnership";
                 description += "<br> Number of Classes: " + e.features[0].properties.ClassesAmount;
                 description += "<br>" + e.features[0].properties.ProjectsAmount;
                 description += "<br>"+ e.features[0].properties.ReportsLink;
                 
                 
-                description += "</a><br><br> Second Partnership Year: " + e.features[0].properties.Year2;
+                description += "</a><br><br>" + e.features[0].properties.Year2;
                 description += "<br>Special Project";
                 description += "<br>" + e.features[0].properties.ReportsLink2;
                 
@@ -747,13 +749,14 @@
                 description = ''
                 description += e.features[0].properties.Logo
                 description += "<br> Partner: " + e.features[0].properties.Municipality;
-                description += "<br><br> First Partnership Year: " + e.features[0].properties.Year;
+                description += "<br><br>" + e.features[0].properties.Year;
+                description += "<br>Yearlong Partnership"                
                 description += "<br> Number of Classes: " + e.features[0].properties.ClassesAmount;
                 description += "<br>" + e.features[0].properties.ProjectsAmount;
                 description += "<br>"+ e.features[0].properties.ReportsLink;
                 
-                description += "</a><br><br> Second Partnership Year: " + e.features[0].properties.Year2;
-                description += "<br>Dual partnership with City of Eugene";
+                description += "</a><br><br>" + e.features[0].properties.Year2;
+                description += "<br>Yearlong dual partnership with City of Eugene"
                 description += "<br>" + e.features[0].properties.ProjectsAmount2;
                 description += "<br>" + e.features[0].properties.ReportsLink2;
                 
@@ -763,8 +766,9 @@
             if (e.features[0].properties.Municipality == 'City of Eugene and Gresham'){
                 description = ''
                 description += e.features[0].properties.Logo
-                description += "<br> Partner: " + e.features[0].properties.Municipality;
-                description += "<br> Year: " + e.features[0].properties.Year;
+                description += "<br>" + e.features[0].properties.Municipality;
+                description += " - " + e.features[0].properties.Year;
+                description += "<br> Yearlong Partnership"
             //    description += "<br><br>Dual partnership with City of Eugene";
                 description += "<br>" + e.features[0].properties.ReportsLink;
                 
